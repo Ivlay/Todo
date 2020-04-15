@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="CSS/style.css">
+   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet">
+   <title>ToDo List</title>
+</head>
+
+<body>
+   <div id="todo">
+      <label for="input_form">
+         <h1>Todo list</h1>
+      </label>
+      <div class="addListInput">
+         <form action="#" autocomplete="off" class="addForm">
+            <button id="add" type="submit">
+               <svg class="svgAdd">
+               </svg>
+            </button>
+            <input type="text" placeholder="Add ToDo" id="input_form">
+         </form>
+      </div>
+      <ul class="activeList">
+      </ul>
+      <label for="inputMenu" class="inActiveText">
+            <svg class="inActiveIcon">
+            </svg>
+         ticked
+      </label>
+      <input type="checkbox" class="inputMenu" id="inputMenu">
+      <ul class="inActiveList"></ul>
+   </div>
+
+   <script src="JS/script.js"></script>
+</body>
+
+</html>
