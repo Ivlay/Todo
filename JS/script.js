@@ -1,91 +1,70 @@
-let input = document.querySelector("input[type='text']");
-let ulActive = document.querySelector("ul.activeList");
-let buttonAdd = document.getElementById("add");
-let ulInActive = document.querySelector("ul.inActiveList");
+const todo = document.getElementById('todo');
+const form = todo.querySelector('.addForm');
+const input = form.querySelector('#input_form');
+const submitBtn = form.querySelector('#add');
+const ulActive = todo.querySelector('.activeList');
 
-const createTodo = (todo) => {
-   let li = document.createElement("li");
-   li.innerText = todo;
+const ulInActive = todo.querySelector('.inActiveList');
 
-   let buttonCheck = document.createElement("button");
-   buttonCheck.type = "submit";
-   buttonCheck.classList = ("buttonList checked");
-   buttonCheck.innerHTML = "<svg class='svgChecked'></svg>";
+form.addEventListener('submit', submitFormHandler);
+const toDoItems = [];
+const toDo = {id: 1};
 
-   let buttonDelete = document.createElement("button");
-   buttonDelete.type = "submit";
-   buttonDelete.classList = ("buttonList delete");
-   buttonDelete.innerHTML = "<svg class='svgDelete'></svg>";
-
-
-   li.appendChild(buttonCheck);
-   li.appendChild(buttonDelete);
-   return li;
-}
-
-const addTodo = () => {
-   if (input.value && input.value !== " ") {
-      let li = createTodo(input.value);
-      ulActive.appendChild(li);
-      bindTodoEvents(li, checkedTodo);
-      input.value = "";
-   }
-}
-
-function checkedTodo() {
-   let li = this.parentNode;
-   ulInActive.appendChild(li);
-   let buttonChecked = document.querySelector("button.checked");
-   buttonChecked.classList = ("buttonList remove");
-   buttonChecked.innerHTML = "<svg class='svgAdd'></svg>"
-   bindTodoEvents(li, removeTodo);
-}
-
-function removeTodo() {
-   let li = this.parentNode;
-   ulActive.appendChild(li);
-   let removeButton = li.querySelector("button.remove");
-   removeButton.classList = ("buttonList checked");
-   removeButton.innerHTML = "<svg class='svgChecked'></svg>"
-   bindTodoEvents(li, checkedTodo);
-}
-
-function deleteTodo() {
-   let li = this.parentNode;
-   let ul = li.parentNode;
-   ul.removeChild(li);
-}
-
-function editTodo() {
-   let editLi = this;
-   let li = this.parentNode;
-   console.log("1");
-}
-
-const bindTodoEvents = (li, buttonEvent) => {
-   let chekedButton = li.querySelector("button.checked");
-   let deleteButton = li.querySelector("button.delete");
-   let editList = li;
-
-   editList.ondblclick = editTodo;
-   chekedButton.onclick = checkedTodo;
-   deleteButton.onclick = deleteTodo;
-}
-
-input.addEventListener("keypress", (event) => {
-   if (event.keyCode == 13) {
-      addTodo();
-      event.preventDefault();
-   }
-});
-
-buttonAdd.addEventListener("click", (event) => {
-   addTodo();
+function submitFormHandler(event) {
    event.preventDefault();
+
+   if (input.value && input.value !== ' ') {
+      toDo.text = input.value;
+      toDo.checked = true;
+      toDoItems.push(toDo);
+      console.log(toDo.checked);
+      renderActive();
+   }
+   input.value = '';
+}
+
+todo.addEventListener('click', event => {
+
+   let btnType = event.target.dataset.btn;
+   let li = todo.querySelector('li');
+
+   if (btnType === 'delete') {
+      li.parentNode.removeChild(li);
+   } else if (btnType === 'checked') {
+      checkedTodo(toDo);
+   } else if (btnType === 'remove') {
+      removeTodo(toDo)
+      console.log('remove');
+   }
 });
 
-let textInactiv = document.querySelector("label.inActiveText");
-textInactiv.addEventListener("click", (event) => {
-   let icon = document.getElementsByClassName("inActiveIcon")[0];
-   icon.classList.toggle("open");
-});
+function removeTodo(toDo) {
+   toDo.checked = true;
+   let li = ulInActive.querySelector('li');
+   ulActive.appendChild(li);
+   renderActive();
+}
+
+function checkedTodo(toDo) {
+   toDo.checked = false;
+   let li = ulActive.querySelector('li');
+   ulInActive.appendChild(li);
+   render();
+}
+
+const toHtml = toDo => `
+   <li data-id="${toDo.id}">${toDo.text}
+   <button type="submit" ${toDo.checked ? ` class="buttonList checked" data-btn="checked"> <svg data-btn="checked" class="svgChecked"></svg></button>` : `<button type="submit" class="buttonList remove" data-btn="remove"><svg class="svgAdd" data-btn="remove"></svg>
+   </button>`}
+   </button>
+   <button type="submit" data-btn="delete" class="buttonList delete">
+   <svg data-btn="delete" class="svgDelete"></svg>
+   </button>
+   </li>`;
+
+function renderActive () {
+   ulActive.innerHTML = toDoItems.map(toHtml).join('');
+}
+function render () {
+   ulInActive.innerHTML = toDoItems.map(toHtml).join('');
+}
