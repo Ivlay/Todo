@@ -83,10 +83,6 @@ svg {
    display: block;
 }
 
-#buttons {
-   text-align: center;
-}
-
 .addListInput {
    border-bottom: 1px solid #dadce0;
 }
@@ -95,7 +91,7 @@ svg {
    position: relative;
 }
 
-#add {
+.add {
    position: absolute;
    left: 0.53rem;
 }
