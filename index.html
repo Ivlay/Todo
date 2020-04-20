@@ -16,23 +16,19 @@
          <h1>Todo list</h1>
       </label>
       <div class="addListInput">
-         <form action="#" autocomplete="off" class="addForm">
-            <button id="add" type="submit">
+         <form action="#" autocomplete="off" class="addForm" data-list-form>
+            <button class="add" type="submit">
                <svg class="svgAdd">
                </svg>
             </button>
-            <input type="text" placeholder="Add ToDo" id="input_form">
+            <input type="text" placeholder="Add ToDo" data-list-input>
          </form>
       </div>
-      <ul class="activeList">
-      </ul>
-      <label for="inputMenu" class="inActiveText">
-            <svg class="inActiveIcon">
-            </svg>
-         ticked
-      </label>
+      <ul class="activeList" data-lists></ul>
+      <label for="inputMenu" class="inActiveText" data-input>
+         <svg class="inActiveIcon"></svg>ticked</label>
       <input type="checkbox" class="inputMenu" id="inputMenu">
-      <ul class="inActiveList"></ul>
+      <ul class="inActiveList" data-lists-checked></ul>
    </div>
 
    <script src="JS/script.js"></script>

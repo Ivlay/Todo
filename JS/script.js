@@ -1,70 +1,102 @@
 const todo = document.getElementById('todo');
-const form = todo.querySelector('.addForm');
-const input = form.querySelector('#input_form');
-const submitBtn = form.querySelector('#add');
-const ulActive = todo.querySelector('.activeList');
+const ulActive = todo.querySelector('[data-lists]');
+const ulInActive = todo.querySelector('[data-lists-checked]')
+const newListForm = todo.querySelector('[data-list-form]');
+const newListInput = newListForm.querySelector('[data-list-input]');
 
-const ulInActive = todo.querySelector('.inActiveList');
 
-form.addEventListener('submit', submitFormHandler);
-const toDoItems = [];
-const toDo = {id: 1};
+const LOCAL_STORAGE_LIST_KEY = 'task.lists'
+const LOCAL_STORAGE_CHECKED_LIST = 'task.checked'
 
-function submitFormHandler(event) {
-   event.preventDefault();
-
-   if (input.value && input.value !== ' ') {
-      toDo.text = input.value;
-      toDo.checked = true;
-      toDoItems.push(toDo);
-      console.log(toDo.checked);
-      renderActive();
-   }
-   input.value = '';
-}
+let lists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_LIST_KEY)) || [];
+let checkedList = JSON.parse(localStorage.getItem(LOCAL_STORAGE_CHECKED_LIST)) || [];
 
 todo.addEventListener('click', event => {
+   const btnType = event.target.dataset.btn;
 
-   let btnType = event.target.dataset.btn;
-   let li = todo.querySelector('li');
-
-   if (btnType === 'delete') {
-      li.parentNode.removeChild(li);
-   } else if (btnType === 'checked') {
-      checkedTodo(toDo);
+   if (btnType === 'checked') {
+      const li = todo.querySelector('li');
+      const id = li.dataset.listId;
+      checkedList = id;
+      saveAndRender();
+   } else if (btnType === 'delete') {
+      const li = todo.querySelector('li');
+      const id = li.dataset.listId;
+      lists = lists.filter(list => list.id !== id);
+      saveAndRender();
    } else if (btnType === 'remove') {
-      removeTodo(toDo)
-      console.log('remove');
+      
    }
 });
 
-function removeTodo(toDo) {
-   toDo.checked = true;
-   let li = ulInActive.querySelector('li');
-   ulActive.appendChild(li);
-   renderActive();
+newListForm.addEventListener('submit', event => {
+   event.preventDefault();
+   const listName = newListInput.value;
+   if (listName == null || listName === '' || listName === ' ') {
+      newListInput.value = '';
+      return
+   }
+   const list = createList(listName);
+   newListInput.value = '';
+   lists.push(list);
+   saveAndRender();
+});
+
+function createList(name) {
+   return { id: Date.now().toString(), title: name, checked: false };
 }
 
-function checkedTodo(toDo) {
-   toDo.checked = false;
-   let li = ulActive.querySelector('li');
-   ulInActive.appendChild(li);
-   render();
+
+function saveAndRender() {
+   save();
+   renderList();
 }
 
-const toHtml = toDo => `
-   <li data-id="${toDo.id}">${toDo.text}
-   <button type="submit" ${toDo.checked ? ` class="buttonList checked" data-btn="checked"> <svg data-btn="checked" class="svgChecked"></svg></button>` : `<button type="submit" class="buttonList remove" data-btn="remove"><svg class="svgAdd" data-btn="remove"></svg>
-   </button>`}
-   </button>
-   <button type="submit" data-btn="delete" class="buttonList delete">
-   <svg data-btn="delete" class="svgDelete"></svg>
-   </button>
-   </li>`;
+function save() {
+   localStorage.setItem(LOCAL_STORAGE_LIST_KEY, JSON.stringify(lists));
+   localStorage.setItem(LOCAL_STORAGE_CHECKED_LIST, JSON.stringify(checkedList));
+}
 
-function renderActive () {
-   ulActive.innerHTML = toDoItems.map(toHtml).join('');
+function render() {
+   renderList();
+   // if (selectedListId === null) {
+   //    labelMenu.classList.add("none")
+   // } else {
+   //    labelMenu.classList.remove("none")
+   //    labelMenu.classList.add("block")
+   // }
 }
-function render () {
-   ulInActive.innerHTML = toDoItems.map(toHtml).join('');
+
+function renderList() {
+   clearElement(ulActive);
+   lists.forEach(list => {
+      const listElement = document.createElement('li');
+
+      listElement.dataset.listId = list.id;
+      listElement.innerText = list.title;
+
+      ulActive.appendChild(listElement);
+
+      if (list.id === checkedList) {
+         clearElement(ulInActive);
+         list.checked = true;
+         ulInActive.appendChild(listElement);
+      }
+
+      const html = `
+      ${list.checked ? `<button data-btn="remove" class="buttonList remove"><svg class="svgAdd" data-btn="remove"></svg>
+      </button>` : `<button data-btn="checked" class="buttonList checked"><svg data-btn="checked" class="svgChecked"></svg>`}
+      <button data-btn="delete" class="buttonList delete">
+      <svg data-btn="delete" class="svgDelete"></svg>
+      </button>`;
+      listElement.insertAdjacentHTML('beforeend', html);
+
+   })
 }
+
+function clearElement(element) {
+   while (element.firstChild) {
+      element.removeChild(element.firstChild);
+   }
+}
+render();
