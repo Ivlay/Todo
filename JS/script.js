@@ -1,8 +1,9 @@
-const addForm = document.querySelector('[data-add-todo]');
+const todo = document.querySelector('.todo');
+const addForm = todo.querySelector('[data-add-todo]');
 const addInput = addForm.querySelector('[data-add-input]');
-const activeList = document.querySelector('[data-active-list]');
-const spanArrow = document.querySelector('[data-span-arrow]');
-const inActiveList = document.querySelector('[data-inactive-list]');
+const activeList = todo.querySelector('[data-active-list]');
+const spanArrow = todo.querySelector('[data-span-arrow]');
+const inActiveList = todo.querySelector('[data-inactive-list]');
 
 const LOCAL_STORAGE_ACTIVE_LISTS = 'active.lists';
 const LOCAL_STORAGE_INACTIVE_LISTS = 'inActive.lists';
@@ -157,7 +158,7 @@ function save() {
 
 function renderEmpty() {
 
-   const emptyList = document.querySelector('[data-empty]');
+   const emptyList = todo.querySelector('[data-empty]');
 
    const emptyImg = document.createElement('div');
    emptyImg.classList.add('empty-list-img');
