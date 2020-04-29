@@ -49,9 +49,9 @@ inActiveList.addEventListener('click', event => {
 
    if (btnType === 'delete') {
       inActiveLists = inActiveLists.filter(list => list.id !== id);
-      saveAndRender();      
+      saveAndRender();
    } else if (btnType === 'remove') {
-      const checkItem = inActiveLists.find(list => list.id ===id);
+      const checkItem = inActiveLists.find(list => list.id === id);
       inActiveLists = inActiveLists.filter(list => list.id !== id);
       activeLists.unshift(checkItem);
       saveAndRender();
@@ -70,6 +70,10 @@ spanArrow.addEventListener('click', event => {
 
 function render() {
    clearElement(activeList);
+   renderEmpty();
+   renderInActive();
+   renderTaskCount();
+
    activeLists.forEach(list => {
       const listElement = document.createElement('li');
 
@@ -101,12 +105,12 @@ function render() {
       listElement.appendChild(buttonDelete);
 
       activeList.appendChild(listElement);
-
    });
 }
 
 function renderInActive() {
    clearElement(inActiveList);
+
    inActiveLists.forEach(list => {
       const listElement = document.createElement('li');
 
@@ -144,12 +148,58 @@ function renderInActive() {
 function saveAndRender() {
    save();
    render();
-   renderInActive();
 }
 
 function save() {
    localStorage.setItem(LOCAL_STORAGE_ACTIVE_LISTS, JSON.stringify(activeLists));
    localStorage.setItem(LOCAL_STORAGE_INACTIVE_LISTS, JSON.stringify(inActiveLists));
+}
+
+function renderEmpty() {
+
+   const emptyList = document.querySelector('[data-empty]');
+
+   const emptyImg = document.createElement('div');
+   emptyImg.classList.add('empty-list-img');
+   emptyImg.innerHTML = `
+         <svg viewBox="0 0 24 24" width='72' height='72'>
+            <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" />
+            <path d="M0 0h24v24H0z" fill="none" />
+         </svg>
+         `;
+   const emptyListText = document.createElement('div');
+   emptyListText.classList.add('empty-list-text');
+   const emptyTitle = document.createElement('h3');
+   const emptyText = document.createElement('p');
+   emptyTitle.innerText = 'Your Todo list is empty';
+   emptyText.innerText = "Let's create your list and execute it.";
+   emptyListText.appendChild(emptyTitle);
+   emptyListText.appendChild(emptyText);
+
+   if (activeLists.length === 0 && inActiveLists.length === 0) {
+      emptyList.appendChild(emptyImg);
+      emptyList.appendChild(emptyListText);
+
+   } else {
+      emptyList.innerHTML = '';
+   }
+}
+
+function renderTaskCount() {
+   const taskCount = inActiveLists.length;
+   const inActiveListSection = document.querySelector('.inActive-list-section');
+
+   if (taskCount) {
+      inActiveListSection.style.display = 'block';
+
+      spanArrow.innerHTML = ` ${taskCount} ticked<svg class="arrowDown" viewBox="0 0 24 24" height="24" width="24">
+         <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+         <path d="M0 0h24v24H0V0z" fill="none" />
+      </svg>
+   `;
+   } else {
+      inActiveListSection.style.display = 'none';
+   }
 }
 
 function clearElement(element) {
@@ -159,4 +209,3 @@ function clearElement(element) {
 }
 
 render();
-renderInActive();
