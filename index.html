@@ -4,34 +4,71 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="CSS/style.css">
+   <link rel="stylesheet" href="CSS/main.css">
    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
       rel="stylesheet">
-   <title>ToDo List</title>
+   <script defer src="JS/script.js"></script>
+   <title>Todo List</title>
 </head>
 
-<body>
-   <div id="todo">
-      <label for="input_form">
-         <h1>Todo list</h1>
-      </label>
-      <div class="addListInput">
-         <form action="#" autocomplete="off" class="addForm" data-list-form>
-            <button class="add" type="submit">
-               <svg class="svgAdd">
-               </svg>
-            </button>
-            <input type="text" placeholder="Add ToDo" data-list-input>
-         </form>
-      </div>
-      <ul class="activeList" data-lists></ul>
-      <label for="inputMenu" class="inActiveText" data-input>
-         <svg class="inActiveIcon"></svg>ticked</label>
-      <input type="checkbox" class="inputMenu" id="inputMenu">
-      <ul class="inActiveList" data-lists-checked></ul>
+<div class="todo">
+   <h1>Todo list</h1>
+   <div class="add-list-item">
+      <form action="#" data-add-todo>
+         <button type="submit" class="add">
+            <svg viewBox="0 0 24 24" height="24" width="24">
+               <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+               <path d="M0 0h24v24H0z" fill="none" />
+            </svg>
+         </button>
+         <input type="text" placeholder="Add todo" data-add-input>
+      </form>
    </div>
 
-   <script src="JS/script.js"></script>
+   <div class="active-list-section">
+      <ul class="active-list" data-active-list>
+         <li>fdasfa
+            <button class="buttonList check">
+               <svg viewBox="0 0 24 24" height="24" width="24">
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+               </svg>
+            </button>
+            <button class="buttonList delete">
+               <svg viewBox="0 0 24 24" height="24" width="24">
+                  <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                  <path d="M0 0h24v24H0z" fill="none" />
+               </svg>
+            </button>
+         </li>
+      </ul>
+   </div>
+   <div class="inActive-list-section">
+      <span data-span-arrow>
+         <svg class="arrowDown" viewBox="0 0 24 24" height="24" width="24">
+            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+            <path d="M0 0h24v24H0V0z" fill="none" />
+         </svg>1 ticked</span>
+      <ul class="inActive-list" data-inactive-list>
+         <li>fdasfa<button class="buttonList remove">
+               <svg viewBox="0 0 24 24" height="24" width="24">
+                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                  <path d="M0 0h24v24H0z" fill="none" />
+               </svg>
+            </button>
+            <button class="buttonList delete">
+               <svg viewBox="0 0 24 24" height="24" width="24">
+                  <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                  <path d="M0 0h24v24H0z" fill="none" />
+               </svg>
+            </button>
+         </li>
+      </ul>
+   </div>
+</div>
+
+<body>
+
 </body>
 
 </html>
