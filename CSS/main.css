@@ -58,6 +58,7 @@ li {
    line-height: 3.2rem;
    padding: 0 1rem 0 4.8rem;
    position: relative;
+   user-select: none;
    transition: background-color .2s linear;
 }
 
@@ -72,7 +73,7 @@ button::after {
    border-radius: 50%;
    background-color: rgba(0, 0, 0, 0.253);
    transform: scale(1);
-   transition: transform .5s ease-in-out, opacity .5s ease-in-out;
+   transition: transform .3s ease-in-out, opacity .3s ease-in-out;
 }
 
 button:active::after {
@@ -139,6 +140,7 @@ ul li:hover .buttonList {
 
 .inActive-list-section span {
    cursor: pointer;
+   user-select: none;
    position: relative;
    height: 3.2rem;
    line-height: 3.2rem;
@@ -149,6 +151,11 @@ ul li:hover .buttonList {
 
 .inActive-list-section span:hover {
    background-color: rgba(124, 124, 124, 0.1);
+}
+
+.inActive-list-menu {
+   position: absolute;
+   right: 0.53rem;
 }
 
 .inActive-list-section li:hover {
@@ -179,14 +186,14 @@ ul li:hover .buttonList {
 
 .empty-list-section {
    background-color: #fafafa;
-   padding-top: 6.6rem;
-   display: flex;
+   padding-top: 3.5rem;
+   user-select: none;
    justify-content: center;
    flex-direction: column;
 }
 
 .empty-list-img {
-   padding: 3rem;
+   padding: 2.5rem;
    border-radius: 50%;
    margin: 0 auto;
    background-color: rgba(66,133,244,.12);

@@ -28,7 +28,7 @@ function createNewList(name) {
    return { id: Date.now().toString(), name: name }
 }
 
-activeList.addEventListener('click', event => {
+activeList.addEventListener('mouseup', event => {
    const btnType = event.target.dataset.btn;
 
    const id = event.target.dataset.listId;
@@ -44,7 +44,7 @@ activeList.addEventListener('click', event => {
    }
 });
 
-inActiveList.addEventListener('click', event => {
+inActiveList.addEventListener('mouseup', event => {
    const btnType = event.target.dataset.btn;
    const id = event.target.dataset.listId;
 
@@ -59,15 +59,22 @@ inActiveList.addEventListener('click', event => {
    }
 });
 
-spanArrow.addEventListener('click', event => {
-   const arrow = spanArrow.querySelector('.arrowDown');
-   arrow.classList.toggle('open');
-   if (arrow.classList.contains('open')) {
-      inActiveList.style.display = "block";
-   } else {
-      inActiveList.style.display = "none";
-   }
+spanArrow.addEventListener('click', (event) => {
+   let pressed = event.target.getAttribute('aria-pressed') === 'true';
+   event.target.setAttribute('aria-pressed', String(!pressed));
+   checkPressed(pressed);
 });
+
+function checkPressed(pressed) {
+   const arrow = spanArrow.querySelector('.arrowDown');
+   if (pressed) {
+      arrow.classList.add('open');
+      inActiveList.style.display = 'block';
+   } else {
+      arrow.classList.remove('open');
+      inActiveList.style.display = 'none';
+   }
+}
 
 function render() {
    clearElement(activeList);
@@ -107,6 +114,13 @@ function render() {
 
       activeList.appendChild(listElement);
    });
+
+   const activeListSection = todo.querySelector('.active-list-section');
+   if (activeLists.length === 0) {
+      activeListSection.style.display = 'none';
+   } else {
+      activeListSection.style.display = '';
+   }
 }
 
 function renderInActive() {
@@ -180,8 +194,10 @@ function renderEmpty() {
    if (activeLists.length === 0 && inActiveLists.length === 0) {
       emptyList.appendChild(emptyImg);
       emptyList.appendChild(emptyListText);
+      emptyList.style.display = 'flex';
 
    } else {
+      emptyList.style.display = 'none';
       emptyList.innerHTML = '';
    }
 }
@@ -198,9 +214,29 @@ function renderTaskCount() {
          <path d="M0 0h24v24H0V0z" fill="none" />
       </svg>
    `;
+      const buttonMenu = document.createElement('button');
+      buttonMenu.classList.add('inActive-list-menu');
+      buttonMenu.innerHTML = `
+   <svg viewBox="0 0 24 24" width='24' height='24'>
+      <path d="M0 0h24v24H0z" fill="none"/>
+      <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+   </svg>
+   `;
+      spanArrow.appendChild(buttonMenu);
+      buttonMenu.addEventListener('click', event => {
+         event.stopPropagation();
+         deleteAll();
+      });
    } else {
       inActiveListSection.style.display = 'none';
+
+      spanArrow.innerHTML = '';
    }
+}
+
+function deleteAll() {
+   inActiveLists = [];
+   saveAndRender();
 }
 
 function clearElement(element) {
