@@ -43,6 +43,33 @@ activeList.addEventListener('mouseup', event => {
       saveAndRender();
    }
 });
+activeList.addEventListener('dblclick', function edit(event) {
+   const li = event.target.parentNode;
+   if (event.target.parentNode.tagName.toLowerCase() === 'li') {
+      const id = event.target.parentNode.dataset.listId;
+      for (let i = 0; i < activeLists.length; i++) {
+         const list = activeLists[i];
+         if (list.id === id) {
+            const input = document.createElement('input');
+            li.classList.add('edit');
+            li.appendChild(input);
+            input.value = innerText = list.name;
+            input.focus();
+            input.addEventListener('blur', event => {
+               if(input.value.trim() === '') {
+                  activeLists = activeLists.filter(list => list.id !== id);                 
+               }
+               li.classList.remove('edit');
+               list.name = input.value;
+               li.removeChild(input);
+               saveAndRender();
+            });
+         }
+      }
+      activeList.removeEventListener('dblclick', edit);
+   }
+   activeList.addEventListener('dblclick', edit);
+});
 
 inActiveList.addEventListener('mouseup', event => {
    const btnType = event.target.dataset.btn;
@@ -85,6 +112,9 @@ function render() {
    activeLists.forEach(list => {
       const listElement = document.createElement('li');
 
+      const listText = document.createElement('div');
+      listText.classList.add('view');
+
       const buttonCheck = document.createElement('button');
       buttonCheck.dataset.btn = 'check';
       buttonCheck.dataset.listId = list.id;
@@ -108,7 +138,8 @@ function render() {
       `;
 
       listElement.dataset.listId = list.id;
-      listElement.innerText = list.name;
+      listElement.appendChild(listText);
+      listText.innerText = list.name;
       listElement.appendChild(buttonCheck);
       listElement.appendChild(buttonDelete);
 
@@ -128,6 +159,8 @@ function renderInActive() {
 
    inActiveLists.forEach(list => {
       const listElement = document.createElement('li');
+      const listText = document.createElement('div');
+      listText.classList.add('view');
 
       const buttonRemove = document.createElement('button');
       buttonRemove.dataset.btn = 'remove';
@@ -152,7 +185,8 @@ function renderInActive() {
       `;
 
       listElement.dataset.listId = list.id;
-      listElement.innerText = list.name;
+      listElement.appendChild(listText);
+      listText.innerText = list.name;
       listElement.appendChild(buttonRemove);
       listElement.appendChild(buttonDelete);
 
@@ -223,7 +257,7 @@ function renderTaskCount() {
    </svg>
    `;
       spanArrow.appendChild(buttonMenu);
-      buttonMenu.addEventListener('click', event => {
+      buttonMenu.addEventListener('mouseup', event => {
          event.stopPropagation();
          deleteAll();
       });

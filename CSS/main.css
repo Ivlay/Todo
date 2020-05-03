@@ -54,9 +54,6 @@ ul {
 
 li {
    cursor: default;
-   height: 3.2rem;
-   line-height: 3.2rem;
-   padding: 0 1rem 0 4.8rem;
    position: relative;
    user-select: none;
    transition: background-color .2s linear;
@@ -113,6 +110,25 @@ button:active::after {
 
 .active-list li:last-child {
    border-bottom: 1px solid #dadce0;
+}
+
+.view {
+   height: 3.2rem;
+   line-height: 3.2rem;
+   padding: 0 1rem 0 4.8rem;
+}
+
+.edit input {
+   height: 3.2rem;
+   line-height: 3.2rem;
+   width: 100%;
+   border: none;
+   outline: none;
+   background-color: transparent;
+   display: block;
+}
+li.edit .view {
+   display: none;
 }
 
 ul li:hover .buttonList {
@@ -196,7 +212,7 @@ ul li:hover .buttonList {
    padding: 2.5rem;
    border-radius: 50%;
    margin: 0 auto;
-   background-color: rgba(66,133,244,.12);
+   background-color: rgba(66, 133, 244, .12);
 }
 
 .empty-list-img svg {
@@ -207,9 +223,11 @@ ul li:hover .buttonList {
    margin-top: 3.2rem;
    text-align: center;
 }
+
 .empty-list-text h3 {
    font-weight: 400;
 }
+
 .empty-list-text p {
    color: #80868b;
 }
