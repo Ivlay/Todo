@@ -43,6 +43,7 @@ activeList.addEventListener('mouseup', event => {
       saveAndRender();
    }
 });
+
 activeList.addEventListener('dblclick', function edit(event) {
    const li = event.target.parentNode;
    if (event.target.parentNode.tagName.toLowerCase() === 'li') {
@@ -56,8 +57,8 @@ activeList.addEventListener('dblclick', function edit(event) {
             input.value = innerText = list.name;
             input.focus();
             input.addEventListener('blur', event => {
-               if(input.value.trim() === '') {
-                  activeLists = activeLists.filter(list => list.id !== id);                 
+               if (input.value.trim() === '') {
+                  activeLists = activeLists.filter(list => list.id !== id);
                }
                li.classList.remove('edit');
                list.name = input.value;
@@ -107,7 +108,7 @@ function render() {
    clearElement(activeList);
    renderEmpty();
    renderInActive();
-   renderTaskCount();
+   renderListCount();
 
    activeLists.forEach(list => {
       const listElement = document.createElement('li');
@@ -236,7 +237,7 @@ function renderEmpty() {
    }
 }
 
-function renderTaskCount() {
+function renderListCount() {
    const taskCount = inActiveLists.length;
    const inActiveListSection = document.querySelector('.inActive-list-section');
 
@@ -259,7 +260,7 @@ function renderTaskCount() {
       spanArrow.appendChild(buttonMenu);
       buttonMenu.addEventListener('mouseup', event => {
          event.stopPropagation();
-         deleteAll();
+         deleteAllInActive();
       });
    } else {
       inActiveListSection.style.display = 'none';
@@ -268,7 +269,7 @@ function renderTaskCount() {
    }
 }
 
-function deleteAll() {
+function deleteAllInActive() {
    inActiveLists = [];
    saveAndRender();
 }
