@@ -140,7 +140,9 @@ function render() {
 
       listElement.dataset.listId = list.id;
       listElement.appendChild(listText);
+
       listText.innerText = list.name;
+
       listElement.appendChild(buttonCheck);
       listElement.appendChild(buttonDelete);
 
@@ -160,6 +162,7 @@ function renderInActive() {
 
    inActiveLists.forEach(list => {
       const listElement = document.createElement('li');
+
       const listText = document.createElement('div');
       listText.classList.add('view');
 
@@ -187,7 +190,9 @@ function renderInActive() {
 
       listElement.dataset.listId = list.id;
       listElement.appendChild(listText);
+
       listText.innerText = list.name;
+
       listElement.appendChild(buttonRemove);
       listElement.appendChild(buttonDelete);
 
@@ -219,10 +224,13 @@ function renderEmpty() {
          `;
    const emptyListText = document.createElement('div');
    emptyListText.classList.add('empty-list-text');
+
    const emptyTitle = document.createElement('h3');
    const emptyText = document.createElement('p');
+
    emptyTitle.innerText = 'Your Todo list is empty';
    emptyText.innerText = "Let's create your list and execute it.";
+
    emptyListText.appendChild(emptyTitle);
    emptyListText.appendChild(emptyText);
 
@@ -251,6 +259,7 @@ function renderListCount() {
    `;
       const buttonMenu = document.createElement('button');
       buttonMenu.classList.add('inActive-list-menu');
+      buttonMenu.setAttribute('title', 'Delete ticked lists');
       buttonMenu.innerHTML = `
    <svg viewBox="0 0 24 24" width='24' height='24'>
       <path d="M0 0h24v24H0z" fill="none"/>
