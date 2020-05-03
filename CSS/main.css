@@ -231,3 +231,9 @@ ul li:hover .buttonList {
 .empty-list-text p {
    color: #80868b;
 }
+
+@media (max-width: 575px) {
+   .buttonList {
+      display: block;
+   }
+}
