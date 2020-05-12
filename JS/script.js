@@ -51,26 +51,44 @@ activeList.addEventListener('dblclick', function edit(event) {
       for (let i = 0; i < activeLists.length; i++) {
          const list = activeLists[i];
          if (list.id === id) {
-            const input = document.createElement('input');
-            li.classList.add('edit');
-            li.appendChild(input);
-            input.value = innerText = list.name;
-            input.focus();
-            input.addEventListener('blur', event => {
-               if (input.value.trim() === '') {
-                  activeLists = activeLists.filter(list => list.id !== id);
-               }
-               li.classList.remove('edit');
-               list.name = input.value;
-               li.removeChild(input);
-               saveAndRender();
-            });
+            editList(li, id, list);
          }
       }
       activeList.removeEventListener('dblclick', edit);
    }
    activeList.addEventListener('dblclick', edit);
 });
+
+function editList(li, id, list) {
+   const input = document.createElement('input');
+   li.classList.add('edit');
+   li.appendChild(input);
+   input.value = innerText = list.name;
+   input.focus();
+   input.setAttribute('spellcheck', 'false');
+   input.addEventListener('blur', event => {
+      if (input.getAttribute('flag') != '1') {
+         editDone(li, list, input, id);
+      }
+   });
+   input.addEventListener('keydown', event => {
+      input.setAttribute('flag', '1');
+      if (event.keyCode == 27 || event.keyCode == 13) {
+         editDone(li, list, input, id);
+      }
+      input.removeAttribute('flag');
+   });
+}
+
+function editDone(li, list, input, id) {
+   if (input.value.trim() == '') {
+      activeLists = activeLists.filter(list => list.id !== id);
+   }
+   li.classList.remove('edit');
+   list.name = input.value.trim();
+   li.removeChild(input);
+   saveAndRender();
+}
 
 inActiveList.addEventListener('mouseup', event => {
    const btnType = event.target.dataset.btn;
