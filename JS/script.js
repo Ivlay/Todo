@@ -11,6 +11,7 @@ const LOCAL_STORAGE_INACTIVE_LISTS = 'inActive.lists';
 let activeLists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_ACTIVE_LISTS)) || [];
 let inActiveLists = JSON.parse(localStorage.getItem(LOCAL_STORAGE_INACTIVE_LISTS)) || [];
 
+// Add new task
 addForm.addEventListener('submit', event => {
    event.preventDefault();
    const listName = addInput.value;
@@ -24,10 +25,12 @@ addForm.addEventListener('submit', event => {
    addInput.focus();
 });
 
+// return obj with id and title
 function createNewList(name) {
    return { id: Date.now().toString(), name: name }
 }
 
+// Handler activeList
 activeList.addEventListener('mouseup', event => {
    const btnType = event.target.dataset.btn;
 
@@ -44,6 +47,7 @@ activeList.addEventListener('mouseup', event => {
    }
 });
 
+// Edit item
 activeList.addEventListener('dblclick', function edit(event) {
    const li = event.target.parentNode;
    if (event.target.parentNode.tagName.toLowerCase() === 'li') {
@@ -73,8 +77,12 @@ function editList(li, id, list) {
    });
    input.addEventListener('keydown', event => {
       input.setAttribute('flag', '1');
-      if (event.keyCode == 27 || event.keyCode == 13) {
+      if (event.keyCode == 13) {
          editDone(li, list, input, id);
+      } else if (event.keyCode == 27) {
+         li.classList.remove('edit');
+         li.removeChild(input);
+         saveAndRender();
       }
       input.removeAttribute('flag');
    });
@@ -90,6 +98,7 @@ function editDone(li, list, input, id) {
    saveAndRender();
 }
 
+// Handler inActiveList
 inActiveList.addEventListener('mouseup', event => {
    const btnType = event.target.dataset.btn;
    const id = event.target.dataset.listId;
@@ -106,7 +115,7 @@ inActiveList.addEventListener('mouseup', event => {
 });
 
 spanArrow.addEventListener('click', (event) => {
-   let pressed = event.target.getAttribute('aria-pressed') === 'true';
+   let pressed = event.target.getAttribute('aria-pressed') == 'true';
    event.target.setAttribute('aria-pressed', String(!pressed));
    checkPressed(pressed);
 });
@@ -167,6 +176,7 @@ function render() {
       activeList.appendChild(listElement);
    });
 
+   // Display none or block
    const activeListSection = todo.querySelector('.active-list-section');
    if (activeLists.length === 0) {
       activeListSection.style.display = 'none';
@@ -228,6 +238,39 @@ function save() {
    localStorage.setItem(LOCAL_STORAGE_INACTIVE_LISTS, JSON.stringify(inActiveLists));
 }
 
+function renderListCount() {
+   const taskCount = inActiveLists.length;
+   const inActiveListSection = document.querySelector('.inActive-list-section');
+
+   if (taskCount) {
+      inActiveListSection.style.display = 'block';
+
+      spanArrow.innerHTML = ` ${taskCount} ticked<svg class="arrowDown" viewBox="0 0 24 24" height="24" width="24">
+         <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+         <path d="M0 0h24v24H0V0z" fill="none" />
+      </svg>
+   `;
+      const buttonMenu = document.createElement('button');
+      buttonMenu.classList.add('inActive-list-menu');
+      buttonMenu.setAttribute('title', 'Delete ticked lists');
+      buttonMenu.innerHTML = `
+   <svg viewBox="0 0 24 24" width='24' height='24'>
+      <path d="M0 0h24v24H0z" fill="none"/>
+      <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+   </svg>
+   `;
+      spanArrow.appendChild(buttonMenu);
+      buttonMenu.addEventListener('mouseup', event => {
+         event.stopPropagation();
+         deleteAllInActive();
+      });
+   } else {
+      inActiveListSection.style.display = 'none';
+      inActiveList.style.display = 'none';
+      spanArrow.innerHTML = '';
+   }
+}
+
 function renderEmpty() {
 
    const emptyList = todo.querySelector('[data-empty]');
@@ -260,39 +303,6 @@ function renderEmpty() {
    } else {
       emptyList.style.display = 'none';
       emptyList.innerHTML = '';
-   }
-}
-
-function renderListCount() {
-   const taskCount = inActiveLists.length;
-   const inActiveListSection = document.querySelector('.inActive-list-section');
-
-   if (taskCount) {
-      inActiveListSection.style.display = 'block';
-
-      spanArrow.innerHTML = ` ${taskCount} ticked<svg class="arrowDown" viewBox="0 0 24 24" height="24" width="24">
-         <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
-         <path d="M0 0h24v24H0V0z" fill="none" />
-      </svg>
-   `;
-      const buttonMenu = document.createElement('button');
-      buttonMenu.classList.add('inActive-list-menu');
-      buttonMenu.setAttribute('title', 'Delete ticked lists');
-      buttonMenu.innerHTML = `
-   <svg viewBox="0 0 24 24" width='24' height='24'>
-      <path d="M0 0h24v24H0z" fill="none"/>
-      <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-   </svg>
-   `;
-      spanArrow.appendChild(buttonMenu);
-      buttonMenu.addEventListener('mouseup', event => {
-         event.stopPropagation();
-         deleteAllInActive();
-      });
-   } else {
-      inActiveListSection.style.display = 'none';
-
-      spanArrow.innerHTML = '';
    }
 }
 
