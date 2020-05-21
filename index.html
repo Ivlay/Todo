@@ -7,36 +7,34 @@
    <link rel="stylesheet" href="CSS/main.css">
    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
       rel="stylesheet">
-   <script defer src="JS/script.js"></script>
    <title>Todo List</title>
 </head>
 
-<div class="todo">
-   <h1>Todo list</h1>
-   <div class="add-list-item">
-      <form action="#" data-add-todo>
-         <button type="submit" class="add">
-            <svg viewBox="0 0 24 24" height="24" width="24">
-               <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-               <path d="M0 0h24v24H0z" fill="none" />
-            </svg>
-         </button>
-         <input type="text" placeholder="Add todo" data-add-input>
-      </form>
-   </div>
-
-   <div class="active-list-section">
-      <ul class="active-list" data-active-list></ul>
-   </div>
-   <div class="inActive-list-section">
-      <span data-span-arrow aria-pressed="true"></span>
-      <ul class="inActive-list" data-inactive-list></ul>
-   </div>
-   <div class="empty-list-section" data-empty></div>
-</div>
-
 <body>
+   <div class="todo">
+      <h1>Todo list</h1>
+      <div class="add-list-item">
+         <form action="#" data-add-todo>
+            <button type="submit" class="add">
+               <svg viewBox="0 0 24 24" height="24" width="24">
+                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                  <path d="M0 0h24v24H0z" fill="none" />
+               </svg>
+            </button>
+            <input type="text" placeholder="Add todo" data-add-input>
+         </form>
+      </div>
+      <div class="active-list-section">
+         <ul class="active-list" data-active-list></ul>
+      </div>
+      <div class="inActive-list-section">
+         <span data-span-arrow aria-pressed="true"></span>
+         <ul class="inActive-list" data-inactive-list></ul>
+      </div>
+      <div class="empty-list-section" data-empty></div>
+   </div>
 
+   <script src="JS/script.js"></script>
 </body>
 
 </html>
