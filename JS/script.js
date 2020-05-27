@@ -52,12 +52,11 @@ activeList.addEventListener('dblclick', function edit(event) {
    const li = event.target.parentNode;
    if (event.target.parentNode.tagName.toLowerCase() === 'li') {
       const id = event.target.parentNode.dataset.listId;
-      for (let i = 0; i < activeLists.length; i++) {
-         const list = activeLists[i];
+      activeLists.forEach(list => {
          if (list.id === id) {
             editList(li, id, list);
          }
-      }
+      });
       activeList.removeEventListener('dblclick', edit);
    }
    activeList.addEventListener('dblclick', edit);
@@ -71,15 +70,15 @@ function editList(li, id, list) {
    input.focus();
    input.setAttribute('spellcheck', 'false');
    input.addEventListener('blur', event => {
-      if (input.getAttribute('flag') != '1') {
+      if (input.getAttribute('flag') !== '1') {
          editDone(li, list, input, id);
       }
    });
    input.addEventListener('keydown', event => {
       input.setAttribute('flag', '1');
-      if (event.keyCode == 13) {
+      if (event.keyCode === 13) {
          editDone(li, list, input, id);
-      } else if (event.keyCode == 27) {
+      } else if (event.keyCode === 27) {
          li.classList.remove('edit');
          li.removeChild(input);
          saveAndRender();
@@ -89,7 +88,7 @@ function editList(li, id, list) {
 }
 
 function editDone(li, list, input, id) {
-   if (input.value.trim() == '') {
+   if (input.value.trim() === '') {
       activeLists = activeLists.filter(list => list.id !== id);
    }
    li.classList.remove('edit');
@@ -115,7 +114,7 @@ inActiveList.addEventListener('mouseup', event => {
 });
 
 spanArrow.addEventListener('click', (event) => {
-   let pressed = event.target.getAttribute('aria-pressed') == 'true';
+   let pressed = event.target.getAttribute('aria-pressed') === 'true';
    event.target.setAttribute('aria-pressed', String(!pressed));
    checkPressed(pressed);
 });
